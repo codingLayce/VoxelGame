@@ -13,7 +13,7 @@ import java.util.Map;
 public class World {
 
     private static final int CHUNK_RENDER_DISTANCE = 3;
-    private static final int CHUNK_SIZE = 8;
+    private static final int CHUNK_SIZE = 16;
 
     private final Map<Coordinate, Chunk> chunks;
 

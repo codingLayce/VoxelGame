@@ -4,15 +4,7 @@ import fr.layce.game.world.blocks.Block;
 
 import java.util.List;
 
-public class Chunk {
-
-    private final List<Block> blocks;
-    private final Coordinate location;
-
-    public Chunk(List<Block> blocks, Coordinate location) {
-        this.blocks = blocks;
-        this.location = location;
-    }
+public record Chunk(List<Block> blocks, Coordinate location) {
 
     public List<Block> getBlocks() {
         return blocks;

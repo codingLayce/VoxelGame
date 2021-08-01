@@ -1,0 +1,19 @@
+== Version 0.0.1 - 02/08/2021
+
+Engine::
+
+    * Display Manager that creates the window and manage it's state (to be improved).
+    * Loader to load VAOs, Textures and indices.
+    * Models: Textured Quad and CubeModel (solid texture).
+    * Shader abstraction with a StaticShader.
+    * Camera abstraction with a DefaultCamera that can move forward and backward + view with mouse working + camera follow the mouse direction.
+    * Renderer can render an Entity (composed of a Model, position, rotation and scale).
+    * Optimization: Renderer requires all entities to be drawn before making the draw call in order to choose the way it renders them. Currently, the renderer renders entities splits by there texture. All entities with the same textures will be drawn first, then the other ones with another texture will be drawn and so on... For n different textures, the number of calls to glBindTexture() is n.
+
+Game::
+
+    * BlockRegistry: Simple binding of a BlockType and a CubeModel so only one CubeModel is loaded per Block type. It also requires a simple config file containing all the blocks that will be used in order to load them first so another Thread can modify Chunks and Block without making any openGL call.
+    * Block that is just a block with position, entity, and a type.
+    * Chunk is a 16 x 16 flat block container
+    * World contains all the generated chunks + it's the one in charge of generating the chunks + another Thread is running from him which is in charge of generating the new chunks while the player moves toward new locations in the world.
+    * MainGame contains the game initialization and game loop (to be improved alongside with the DisplayManager of the engine).
