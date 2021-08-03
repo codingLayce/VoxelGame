@@ -3,8 +3,10 @@ package fr.layce.game.world.blocks;
 import fr.layce.engine.models.CubeModel;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class BlockRegistry {
 
@@ -12,17 +14,23 @@ public class BlockRegistry {
 
     public static void loadTexturesPath(final String configFile) {
         FileInputStream in = null;
+        File file = null;
+
         try {
-            in = new FileInputStream(configFile);
-        } catch (FileNotFoundException e) {
-            System.err.println("Cannot open " + configFile);
+            file = new File(Objects.requireNonNull(BlockRegistry.class.getResource(configFile)).toURI());
+        } catch (URISyntaxException e) {
             e.printStackTrace();
-            System.exit(-1);
+        }
+
+        try {
+            in = new FileInputStream(Objects.requireNonNull(file));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
 
         String line;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(in)));
             while ((line = reader.readLine()) != null) {
                 BlockType type = BlockType.valueOf(line);
                 blocksModel.put(type, new CubeModel(type));

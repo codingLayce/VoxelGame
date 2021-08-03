@@ -1,7 +1,7 @@
 package fr.layce.engine.models;
 
 import fr.layce.engine.Loader;
-import fr.layce.engine.textures.ModelTexture;
+import fr.layce.engine.textures.Texture;
 import fr.layce.game.world.blocks.BlockType;
 
 public class CubeModel implements Model {
@@ -81,12 +81,12 @@ public class CubeModel implements Model {
     };
 
     private final RawModel rawModel;
-    private final ModelTexture texture;
+    private final Texture texture;
 
     public CubeModel(BlockType type) {
         Loader loader = Loader.getInstance();
         this.rawModel = loader.loadToVao(vertices, indices, texCoord);
-        this.texture = new ModelTexture(loader.loadTexture(type.getTextureName()));
+        this.texture = Texture.loadTexture(type.getTextureName());
     }
 
     @Override
@@ -95,7 +95,7 @@ public class CubeModel implements Model {
     }
 
     @Override
-    public ModelTexture getTexture() {
+    public Texture getTexture() {
         return texture;
     }
 }

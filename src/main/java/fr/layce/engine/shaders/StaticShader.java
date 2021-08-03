@@ -2,12 +2,13 @@ package fr.layce.engine.shaders;
 
 import fr.layce.engine.entities.Camera;
 import fr.layce.engine.utils.Maths;
-import org.lwjgl.util.vector.Matrix4f;
+import fr.layce.engine.utils.Matrix;
+import org.joml.Matrix4f;
 
 public class StaticShader extends ShaderProgram {
 
-    private static final String VERTEX_FILE = "vertexShader.glsl";
-    private static final String FRAGMENT_FILE = "fragmentShader.glsl";
+    private static final String VERTEX_FILE = "/shaders/vertexShader.glsl";
+    private static final String FRAGMENT_FILE = "/shaders/fragmentShader.glsl";
 
     private int location_transformationMatrix;
     private int location_projectionMatrix;

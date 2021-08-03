@@ -1,30 +1,25 @@
 package fr.layce.engine.entities;
 
 import fr.layce.engine.models.Model;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector3f;
 
 public class Entity {
 
     private final Model model;
-    private final Vector3f position;
-    private float rotX, rotY, rotZ;
+    private final Vector3f position, rotation;
     private float scale;
 
     public Entity(Model model, Vector3f position) {
         this.model = model;
         this.position = position;
-        this.rotX = 0;
-        this.rotY = 0;
-        this.rotZ = 0;
+        this.rotation = new Vector3f(0, 0, 0);
         this.scale = 1;
     }
 
-    public Entity(Model model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    public Entity(Model model, Vector3f position, Vector3f rotation, float scale) {
         this.model = model;
         this.position = position;
-        this.rotX = rotX;
-        this.rotY = rotY;
-        this.rotZ = rotZ;
+        this.rotation = rotation;
         this.scale = scale;
     }
 
@@ -35,9 +30,9 @@ public class Entity {
     }
 
     public void increaseRotation(float dx, float dy, float dz) {
-        this.rotX += dx;
-        this.rotY += dy;
-        this.rotZ += dz;
+        this.rotation.x += dx;
+        this.rotation.y += dy;
+        this.rotation.z += dz;
     }
 
     public void increaseScale(float scale) {
@@ -52,16 +47,8 @@ public class Entity {
         return position;
     }
 
-    public float getRotX() {
-        return rotX;
-    }
-
-    public float getRotY() {
-        return rotY;
-    }
-
-    public float getRotZ() {
-        return rotZ;
+    public Vector3f getRotation() {
+        return rotation;
     }
 
     public float getScale() {

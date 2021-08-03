@@ -1,35 +1,41 @@
 package fr.layce.engine.utils;
 
 import fr.layce.engine.entities.Camera;
-import fr.layce.engine.entities.DefaultCamera;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Math;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 public class Maths {
 
-    public static Matrix4f createTransformationMatrix(Vector3f location, float rotX, float rotY, float rotZ, float scale) {
-        Matrix4f matrix = new Matrix4f();
-        matrix.setIdentity();
-
-        Matrix4f.translate(location, matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(rotX), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(rotY), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(rotZ), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4f.scale(new Vector3f(scale, scale, scale), matrix, matrix);
-
-        return matrix;
+    public static Matrix4f createViewMatrix(Camera camera) {
+        return camera.getViewMatrix();
     }
 
-    public static Matrix4f createViewMatrix(Camera camera) {
-        Matrix4f matrix = new Matrix4f();
-        matrix.setIdentity();
+    public static Vector3f cross(Vector3f a, Vector3f b) {
+        float rx = Math.fma(a.y, b.z(), -a.z * b.y());
+        float ry = Math.fma(a.z, b.x(), -a.x * b.z());
+        float rz = Math.fma(a.x, b.y(), -a.y * b.x());
+        return new Vector3f(rx, ry, rz);
+    }
 
-        Matrix4f.rotate((float) Math.toRadians(camera.getRotX()), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(camera.getRotY()), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(camera.getRotZ()), new Vector3f(0, 0, 1), matrix, matrix);
-        Matrix4f.translate(new Vector3f(-camera.getPosition().x, -camera.getPosition().y, -camera.getPosition().z), matrix, matrix);
+    public static Vector3f normalize(Vector3f a) {
+        float scalar = Math.invsqrt(Math.fma(a.x, a.x, Math.fma(a.y, a.y, a.z * a.z)));
+        float x = a.x * scalar;
+        float y = a.y * scalar;
+        float z = a.z * scalar;
+        return new Vector3f(x, y, z);
+    }
 
-        return matrix;
+    public static Vector3f add(Vector3f a, Vector3f b) {
+        return new Vector3f(a.x + b.x, a.y + b.y, a.z + b.z);
+    }
+
+    public static Vector3f minus(Vector3f a, Vector3f b) {
+        return new Vector3f(a.x - b.x, a.y - b.y, a.z - b.z);
+    }
+
+    public static Vector3f mul(Vector3f a, float scale) {
+        return new Vector3f(a.x * scale, a.y * scale, a.z * scale);
     }
 
 }

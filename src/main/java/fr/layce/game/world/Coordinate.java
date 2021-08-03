@@ -1,6 +1,6 @@
 package fr.layce.game.world;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector3f;
 
 import java.util.Objects;
 

@@ -1,13 +1,13 @@
 package fr.layce.engine.models;
 
-import fr.layce.engine.textures.ModelTexture;
+import fr.layce.engine.textures.Texture;
 
 public class TexturedModel implements Model {
 
     private RawModel rawModel;
-    private ModelTexture texture;
+    private Texture texture;
 
-    public TexturedModel(RawModel rawModel, ModelTexture texture) {
+    public TexturedModel(RawModel rawModel, Texture texture) {
         this.rawModel = rawModel;
         this.texture = texture;
     }
@@ -16,7 +16,7 @@ public class TexturedModel implements Model {
         return rawModel;
     }
 
-    public ModelTexture getTexture() {
+    public Texture getTexture() {
         return texture;
     }
 }

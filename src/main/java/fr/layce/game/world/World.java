@@ -1,9 +1,9 @@
 package fr.layce.game.world;
 
+import fr.layce.engine.Application;
 import fr.layce.game.world.blocks.Block;
 import fr.layce.game.world.blocks.BlockType;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class World {
 
-    private static final int CHUNK_RENDER_DISTANCE = 3;
+    private static final int CHUNK_RENDER_DISTANCE = 5;
     private static final int CHUNK_SIZE = 16;
 
     private final Map<Coordinate, Chunk> chunks;
@@ -25,13 +25,14 @@ public class World {
 
     public void startGenerator() {
         new Thread(() -> {
-            while (!Display.isCloseRequested()) {
+            while (Application.getInstance().isRunning()) {
                 Coordinate chunkPos = getChunkCoordinateFromPosition(this.playerPosition);
                 for (int x = chunkPos.x - CHUNK_RENDER_DISTANCE; x < chunkPos.x + CHUNK_RENDER_DISTANCE; x++) {
                     for (int z = chunkPos.z - CHUNK_RENDER_DISTANCE; z < chunkPos.z + CHUNK_RENDER_DISTANCE; z++) {
                         Coordinate pos = new Coordinate(x, 0, z);
                         if (!chunks.containsKey(pos)) {
                             chunks.put(pos, createChunk(pos, BlockType.LEAF));
+                            System.out.printf("[WorldGenerator] - New chunk created at (%d:%d:%d)\n", x, 0, z);
                         }
                     }
                 }
@@ -53,7 +54,7 @@ public class World {
     }
 
     public synchronized void updatePlayerPosition(Vector3f position) {
-        this.playerPosition = position;
+        this.playerPosition = new Vector3f(position);
     }
 
     public List<Chunk> getChunksToRender(Vector3f position) {

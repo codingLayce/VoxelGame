@@ -1,12 +1,13 @@
 package fr.layce.engine.renderer;
 
+import fr.layce.engine.Application;
 import fr.layce.engine.entities.Camera;
 import fr.layce.engine.entities.Entity;
 import fr.layce.engine.models.Model;
 import fr.layce.engine.shaders.StaticShader;
-import org.lwjgl.opengl.Display;
+import fr.layce.engine.utils.Matrix;
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,16 +16,13 @@ import java.util.Map;
 
 public class MasterRenderer {
 
-    private static final float FOV = 90;
+    private static final float FOV = 70;
     private static final float NEAR_PLANE = 0.1f;
-    private static final float FAR_PLANE = 1000;
+    private static final float FAR_PLANE = 100f;
 
     private Matrix4f projectionMatrix;
-
     private final Map<Model, List<Entity>> renderQueue;
-
     private final StaticShader shader;
-
     private final EntityRenderer entityRenderer;
 
     public MasterRenderer() {
@@ -73,19 +71,7 @@ public class MasterRenderer {
     }
 
     public void createProjectionMatrix() {
-        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-        float y_scale = 1f / (float) Math.tan(FOV / 2f);
-        float x_scale = y_scale / aspectRatio;
-        float zp = FAR_PLANE + NEAR_PLANE;
-        float zm = FAR_PLANE - NEAR_PLANE;
-
-        projectionMatrix = new Matrix4f();
-        projectionMatrix.m00 = x_scale;
-        projectionMatrix.m11 = y_scale;
-        projectionMatrix.m22 = -zp / zm;
-        projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -(2 * FAR_PLANE * NEAR_PLANE) / zm;
-        projectionMatrix.m33 = 0;
+        projectionMatrix = Matrix.projection(FOV, Application.getInstance().getWindow().getWidth(), Application.getInstance().getWindow().getHeight(), NEAR_PLANE, FAR_PLANE);
     }
 
 }

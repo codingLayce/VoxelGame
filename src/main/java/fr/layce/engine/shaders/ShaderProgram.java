@@ -1,16 +1,19 @@
 package fr.layce.engine.shaders;
 
-import org.lwjgl.BufferUtils;
+import fr.layce.engine.utils.Matrix;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public abstract class ShaderProgram {
 
@@ -73,12 +76,11 @@ public abstract class ShaderProgram {
         GL20.glUniform3f(location, value.x, value.y, value.z);
     }
 
-    protected void loadMatrix(int location, Matrix4f matrix) {
-        FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-        matrix.store(buffer);
-        buffer.flip();
-
-        GL20.glUniformMatrix4(location, false, buffer);
+    protected void loadMatrix(int location, Matrix4f value) {
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = value.get(stack.mallocFloat(16));
+            GL20.glUniformMatrix4fv(location, false, fb);
+        }
     }
 
     protected void loadBoolean(int location, boolean value) {
@@ -90,12 +92,12 @@ public abstract class ShaderProgram {
 
     private int loadShader(String file, int type) {
         String source = null;
-        InputStream in = this.getClass().getResourceAsStream(file);
+        InputStream in = null;
 
-        assert in != null;
+        in = this.getClass().getResourceAsStream(file);
 
         try {
-            source = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            source = new String(Objects.requireNonNull(in).readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
