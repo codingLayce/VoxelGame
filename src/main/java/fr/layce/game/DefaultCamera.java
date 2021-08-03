@@ -13,8 +13,8 @@ public class DefaultCamera extends Camera {
     private Vector3f front = new Vector3f(0, 0, -1);
     private Vector3f up = new Vector3f(0, 1, 0);
     private Vector3f right;
-    private float yaw = -90.0f;
-    private float pitch = 0;
+    private float yaw = 0;
+    private float pitch = 30;
 
     private final float speed = 10, mouseSensitivity = 0.05f;
     protected float oldMouseX = 0, oldMouseY = 0, newMouseX, newMouseY;

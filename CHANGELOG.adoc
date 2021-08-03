@@ -1,3 +1,17 @@
+== Version 0.0.2 - 03/08/2021
+
+Engine::
+
+    * Migrate to LWJGL 3
+    * Create Layer system in order to create multiple layers that can be simultaneously displayed
+    * Use GLFW as window
+    * Create own static classes to retrieve Mouse and Keyboard information
+    * Create Math utils for Vector3f add, minus, mult, normalize without instance
+
+Game::
+
+    * Create a FPS camera
+
 == Version 0.0.1 - 02/08/2021
 
 Engine::
